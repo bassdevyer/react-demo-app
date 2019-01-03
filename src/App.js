@@ -1,28 +1,43 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import './App.css'
+import {
+  BrowserRouter as Router,
+  Link,
+  Route
+} from 'react-router-dom'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+const App = () =>
+  <Router>
+    <div>
+      <OldSchoolMenuLink activeOnlyWhenExact={true} to='/' label='Home'/>
+      <OldSchoolMenuLink to='/about' label='About'/>
+      <hr/>
+      <Route exact path='/' component={Home}/>
+      <Route path='/about' component={About}/>
+    </div>
+  </Router>
+
+const OldSchoolMenuLink = ({label, to, activeOnlyWhenExact}) =>
+  <Route
+    path={to}
+    exact={activeOnlyWhenExact}
+    children={({match}) => (
+      <div className={match ? 'active' : ''}>
+        {match ? '>' : ''}
+        <Link to={to}>{label}</Link>
       </div>
-    );
-  }
-}
+    )
+    }
+  />
 
-export default App;
+const Home = () =>
+  <div>
+    <h2>Home</h2>
+  </div>
+
+const About = () =>
+  <div>
+    <h2>About</h2>
+  </div>
+
+export default App
