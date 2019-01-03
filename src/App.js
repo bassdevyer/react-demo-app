@@ -1,28 +1,53 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+  render = () => (
+    <Router>
+      <div>
+        <h2>Accounts</h2>
+        <ul>
+          <li>
+            <Link to='/netlix'>Netflix</Link>
+          </li>
+          <li>
+            <Link to='/zillow-group'>Zillow Group</Link>
+          </li>
+          <li>
+            <Link to='/yahoo'>Yahoo</Link>
+          </li>
+          <li>
+            <Link to='/modus-create'>Modus Create</Link>
+          </li>
+        </ul>
+
+        <Route path='/:id' component={Child}/>
+
+        {/*
+        It's possible to use regular expressions to control what param values 
+        should be matched.
+          * "/order/asc"  - matched
+          * "/order/desc" - matched
+          * "/order/foo"  - not matched
+        */}
+        <Route
+          path='/order/:direction(asc|desc)'
+          component={ComponentWithRegex}
+        />
       </div>
-    );
-  }
+    </Router>
+  )
 }
 
-export default App;
+const Child = ({match}) =>
+  <div>
+    <h3>ID: {match.params.id}</h3>
+  </div>
+
+const ComponentWithRegex = ({match}) =>
+  <div>
+    <h3>Only asc/desc are allowed: {match.params.direction}</h3>
+  </div>
+
+export default App
