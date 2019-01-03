@@ -1,28 +1,58 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+  Redirect
+} from 'react-router-dom'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+const App = () =>
+  <Router>
+    <div>
+      <ul>
+        <li>
+          <Link to='/'>Home</Link>
+        </li>
+        <li>
+          <Link to='/old-match'>Old Match, to be redirected</Link>
+        </li>
+        <li>
+          <Link to='/will-match'>Will Match</Link>
+        </li>
+        <li>
+          <Link to='/will-not-match'>will Not Match</Link>
+        </li>
+        <li>
+          <Link to='/also-will-not-match'>Also Will Not Match</Link>
+        </li>
+      </ul>
+      <Switch>
+        <Route path='/' exact component={Home}/>
+        <Redirect from='/old-match' to={WillMatch}/>
+        <Route path='/will-match' component={WillMatch}/>
+        <Route component={NoMatch}/>
+      </Switch>
+    </div>
+  </Router>
 
-export default App;
+const Home = () =>
+  <p>
+    A <code>&lt;Switch></code> renders the first
+    child <code>&lt;Route></code>{' '} that matches.
+    A <code>&lt;Route></code> with no <code>path</code> always matches.
+  </p>
+
+const WillMatch = () =>
+  <h3>
+    Matched!
+  </h3>
+
+const NoMatch = ({location}) =>
+  <div>
+    <h3>
+      No match for <code>{location.pathname}</code>
+    </h3>
+  </div>
+
+export default App
